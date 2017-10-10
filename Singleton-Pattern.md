@@ -23,13 +23,15 @@
 
 public class Singleton1 {
 
-    //重写构造方法
-    //私有的构造方法，外部无法通过 Singleton1 singleton = new  Singleton1()访问
+
+    //私有的构造方法，外部无法通过new
     private Singleton1(){}
 
     //定义个静态，私有属性
-    private static Singleton1 instance = null;
+    private static Singleton1 instance;
 
+    //增加synchronized关键字，迫使整个线程在进到这个方法之前，要等到其他线程全部离开。（不会有两个线程同时进入）
+    
     public static synchronized Singleton1 getInstance(){
         if(instance==null){
             instance = new Singleton1();
@@ -51,11 +53,12 @@ public class Singleton2 {
 
     private Singleton2(){}
 
-    //在自己内部定义自己的一个实例，只供内部调用
-    private static final Singleton2 instance2= new Singleton2();
+    //在静态初始化时创建对象，保证了线程安全
+    private static Singleton2 instance2= new Singleton2();
 
     //供外部访问class的静态方法
     public static Singleton2 getInstance2(){
+    
         return instance2;
     }
 }
@@ -78,7 +81,9 @@ public class Singleton3 {
     private static volatile Singleton3 instance3 = new Singleton3();
 
     public Singleton3 getInstance3() {
+        //检查实例，如果不存在，就进入同步区
         if (instance3 == null) {
+            //只有第一次会彻底执行。
             //线程获得的是对象锁,,别的线程在该类所有对象上的任何操作都不能进行.
             synchronized (Singleton3.class) {
                 if (instance3 == null) {
