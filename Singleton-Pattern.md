@@ -78,9 +78,9 @@ public class Singleton3 {
     private Singleton3() {}
 
     //每次都小心地重新读取这个变量的值，而不是使用保存在寄存器里的备份
-    private static volatile Singleton3 instance3 = new Singleton3();
+    private volatile static Singleton3 instance3 ;
 
-    public Singleton3 getInstance3() {
+    public static Singleton3 getInstance3() {
         //检查实例，如果不存在，就进入同步区
         if (instance3 == null) {
             //只有第一次会彻底执行。
